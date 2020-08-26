@@ -5,25 +5,25 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.lg.DatabaseserviceApplication;
 import com.lg.service.DatabaseService;
 
-
-@TestPropertySource(locations="src/main/resources/test.properties")
-@ContextConfiguration
-@ActiveProfiles("test")
-@RunWith(SpringRunner.class)
+@ExtendWith({ MockitoExtension.class, SpringExtension.class })
+@TestPropertySource(locations = { "classpath:application.yml" })
+@SpringBootTest(classes = DatabaseserviceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableWebMvc
 class DatabaseControllerTest {
 
 	@Mock
@@ -32,20 +32,20 @@ class DatabaseControllerTest {
 	@InjectMocks
 	private DatabaseController databaseController;
 
-	@Autowired
 	public MockMvc mockMvc;
-
 
 	@BeforeEach
 	void setUp() throws Exception {
-
 		databaseController = new DatabaseController(databaseService);
-		mockMvc = MockMvcBuilders.standaloneSetup(databaseController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(databaseController)
+				.addPlaceholderValue("service.databaseService", "/database-service")
+				.build();
 		MockitoAnnotations.initMocks(this);
 	}
-	
+
 	@Test
 	void getDatabaseResponse() {
+
 		String actualObj = "Result";
 		when(databaseService.getDatabaseResponse()).thenReturn(actualObj);
 		String expectedObj = databaseService.getDatabaseResponse();

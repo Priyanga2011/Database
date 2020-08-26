@@ -1,0 +1,23 @@
+server:
+  port: 8082
+  
+service:
+  url: http://localhost:5984
+  username: priyanga
+  password: admin
+  database: medic-db
+  databaseService: /database-service
+  
+management:
+  security:
+      enabled: true
+    
+   
+logging:
+  level:
+    org.springboot.web: ERROR
+    com.lg: DEBUG
+  pattern: 
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+  file: E:/STS_Project/basetemplates/logFiles/dbConnection.log

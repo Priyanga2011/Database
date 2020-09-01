@@ -14,14 +14,14 @@ import org.mockito.quality.Strictness;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.lg.service.impl.DatabaseServiceImpl;
 
-@ExtendWith({ MockitoExtension.class, SpringExtension.class })
+@ExtendWith({ MockitoExtension.class})
 @MockitoSettings(strictness = Strictness.LENIENT)
 class DatabaseServiceImplTest {
 
@@ -29,6 +29,9 @@ class DatabaseServiceImplTest {
 	DatabaseServiceImpl databaseService;
 
 
+	@Mock
+	private RestTemplate restTemplate;
+	
 	@BeforeEach
 	void setup() {
 		ReflectionTestUtils.setField(databaseService, "serviceUrl", "https://smarthealth-subhi.lg-apps.com/");
@@ -39,13 +42,12 @@ class DatabaseServiceImplTest {
 	@Test
 	void shouldReturn_Database_Response() {
 		String expectedResponse = "{\"couchdb\":\"Welcome\",\"version\":\"3.1.0\",\"git_sha\":\"ff0feea20\",\"uuid\":\"a514c4236e5acfaee3e4b6db21bd0480\",\"features\":[\"access-ready\",\"partitioned\",\"pluggable-storage-engines\",\"reshard\",\"scheduler\"],\"vendor\":{\"name\":\"The Apache Software Foundation\"}} ";
-		RestTemplate restTemplate = new RestTemplate();
+//		restTemplate = new RestTemplate();
 		HttpHeaders httpHeaders = new HttpHeaders(); 
 		httpHeaders.add("Cookie", databaseService.cookie);
 		httpHeaders.add("Accept", databaseService.accept);
 		HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-		when(restTemplate.exchange(databaseService.serviceUrl,HttpMethod.GET, entity, String.class)
-				.getBody()).thenReturn(expectedResponse);
+		when(restTemplate.exchange(databaseService.serviceUrl,HttpMethod.GET, entity, String.class)).thenReturn(new ResponseEntity<String>(expectedResponse, HttpStatus.ACCEPTED));
 		String actualResponse = databaseService.getDatabaseResponse();
 		assertEquals(expectedResponse.trim().contains("Welcome"), actualResponse.trim().contains("Welcome"));
 	}

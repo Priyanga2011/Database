@@ -15,19 +15,17 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.lg.DatabaseserviceApplication;
-import com.lg.service.DatabaseService;
+import com.lg.DatabaseApplication;
+import com.lg.service.impl.DatabaseServiceImpl;
 
 @ExtendWith({ MockitoExtension.class, SpringExtension.class })
 @TestPropertySource(locations = { "classpath:application.yml" })
-@SpringBootTest(classes = DatabaseserviceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableWebMvc
+@SpringBootTest(classes = DatabaseApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DatabaseControllerTest {
 
 	@Mock
-	private DatabaseService databaseService;
+	private DatabaseServiceImpl databaseService;
 
 	@InjectMocks
 	private DatabaseController databaseController;
@@ -45,7 +43,6 @@ class DatabaseControllerTest {
 
 	@Test
 	void getDatabaseResponse() {
-
 		String actualObj = "Result";
 		when(databaseService.getDatabaseResponse()).thenReturn(actualObj);
 		String expectedObj = databaseService.getDatabaseResponse();

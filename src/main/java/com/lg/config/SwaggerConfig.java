@@ -17,10 +17,12 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).select()
+        return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false).select()
             .apis(RequestHandlerSelectors
                 .basePackage("com.lg"))
             .paths(PathSelectors.regex("/.*"))
             .build();
     }
+    
+    
 }

@@ -1,12 +1,12 @@
 server:
   port: 8082
+  servlet:
+    context-path: /database-service
   
-service:
-  url: http://localhost:5984
-  username: priyanga
-  password: admin
-  database: medic-db
-  databaseService: /database-service
+spring:
+  profiles:
+    active:
+    - dev
   
 management:
   security:
@@ -20,4 +20,4 @@ logging:
   pattern: 
     console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
-  file: E:/STS_Project/basetemplates/logFiles/dbConnection.log
+  file: 

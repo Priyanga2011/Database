@@ -1,0 +1,4 @@
+databaseservice:
+  url: https://smarthealth-subhi.lg-apps.com/
+  cookie: AuthSession=c3ViaGk6NUY0RTFERTk6U6XNkFb7hE41e4MzB8j-dzTKUWI; userCtx=%7B%22name%22%3A%22subhi%22%2C%22roles%22%3A%5B%22_admin%22%2C%22national_admin%22%2C%22mm-online%22%5D%7D; locale=en
+  accept: application/json
